@@ -25,7 +25,8 @@ add_executable (${HE_LEVEL_NAME}
 	"app/applistener.h"
 	"app/camera-service.h"
 	"app/camera-service.cpp"
- "app/object-service.h")
+ 	"app/object-service.h"
+)
 
 target_precompile_headers(${HE_LEVEL_NAME} PRIVATE "pch.h")
 
