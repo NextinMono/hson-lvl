@@ -43,7 +43,7 @@ namespace ulvl::gfx {
 		unsigned int width{ 1280 }, height{ 720 };
 		float deltaTime{ 0 };
 		Camera* camera;
-		const char* name{ "u-lvl" };
+		const char* name{ "hson-lvl" };
 		std::vector<Model*> models;
 		MainCBuffer mainCbufferData;
 		RenderContext renderCtx;
