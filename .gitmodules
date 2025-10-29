@@ -1,0 +1,18 @@
+[submodule "external/imguizmo/ImGuizmo"]
+	path = external/imguizmo/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo
+[submodule "external/imgui-impl-plume"]
+	path = external/imgui-impl-plume
+	url = https://github.com/Ashrindy/imgui-impl-plume
+[submodule "external/imgui/imgui"]
+	path = external/imgui/imgui
+	url = https://github.com/ocornut/imgui
+[submodule "external/hedgelib/HedgeLib"]
+	path = external/hedgelib/HedgeLib
+	url = https://github.com/radfordhound/HedgeLib
+[submodule "external/plume"]
+	path = external/plume
+	url = https://github.com/renderbag/plume
+[submodule "external/SDL"]
+	path = external/SDL
+	url = https://github.com/libsdl-org/SDL
