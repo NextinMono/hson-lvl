@@ -146,11 +146,6 @@ void Graphics::renderBegin()
     ImGui_ImplSDL3_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("camera");
-    ImGui::Text("Position: %f, %f, %f", camera->position.x, camera->position.y, camera->position.z);
-    ImGui::Text("Rotation: %f, %f, %f", camera->rotation.x, camera->rotation.y, camera->rotation.z);
-    ImGui::End();
-
     ImGuizmo::BeginFrame();
     ImGuizmo::SetRect(0, 0, (float)width, (float)height);
 }

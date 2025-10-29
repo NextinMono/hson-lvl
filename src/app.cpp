@@ -25,6 +25,8 @@ void Application::loop()
         update();
         graphics->renderBegin();
         render();
+        for (auto* listener : appListeners)
+            listener->Render();
         graphics->renderEnd();
     }
 }
@@ -48,7 +50,7 @@ void Application::update() {
     while (SDL_PollEvent(&e)) {
         ImGui_ImplSDL3_ProcessEvent(&e);
 
-        for (auto* listener : sdlListeners)
+        for (auto* listener : appListeners)
             listener->EventCallback(e);
 
         switch (e.type) {
