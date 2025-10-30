@@ -45,14 +45,7 @@ namespace ulvl::gfx {
 		Camera* camera;
 		const char* name{ "hson-lvl" };
 		std::vector<Model*> models;
-		MainCBuffer mainCbufferData;
 		RenderContext renderCtx;
-
-		inline void updateMainCbuffer() {
-			void* mapped = renderCtx.mainCBuffer->map();
-			memcpy(mapped, &mainCbufferData, sizeof(MainCBuffer));
-			renderCtx.mainCBuffer->unmap();
-		}
 
 		bool init();
 		void renderBegin();

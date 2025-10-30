@@ -48,6 +48,9 @@ namespace ulvl {
 					return tService;
 			return nullptr;
 		}
+		inline void addListener(app::ApplicationListener* listener) {
+			appListeners.push_back(listener);
+		}
 		~Application();
 
 	private:

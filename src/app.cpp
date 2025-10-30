@@ -1,6 +1,8 @@
 #include "app.h"
 #include "panels/object-inspector.h"
 #include "app/camera-service.h"
+#include "app/object-service.h"
+#include "app/project-manager.h"
 #include <imgui_impl_sdl3.h>
 
 using namespace ulvl;
@@ -16,6 +18,9 @@ void Application::init() {
     addPanel<ObjectInspector>();
 
     addService<app::CameraService>();
+    addService<app::ObjectService>();
+    addService<app::ProjectManager>();
+    getService<app::ProjectManager>()->loadProject("E:\\Steam\\steamapps\\common\\SonicFrontiers\\image\\x64\\raw\\gedit\\w6d01_gedit\\w6d01_obj_area01.hson");
 }
 
 void Application::loop()

@@ -26,6 +26,9 @@ add_executable (${HE_LEVEL_NAME}
 	"app/camera-service.h"
 	"app/camera-service.cpp"
  	"app/object-service.h"
+ 	"app/object-service.cpp"
+	"app/project-manager.h" 
+	"app/project-manager.cpp"
 )
 
 target_precompile_headers(${HE_LEVEL_NAME} PRIVATE "pch.h")

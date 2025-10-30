@@ -6,6 +6,10 @@
 using namespace ulvl::app;
 using namespace ulvl::gfx;
 
+void CameraService::AddCallback() {
+    Application::instance->addListener(this);
+}
+
 void CameraService::Update() {
     ImGuiIO& io{ ImGui::GetIO() };
     if (io.WantCaptureKeyboard) return;
@@ -27,7 +31,7 @@ void CameraService::Update() {
     if (io.WantCaptureMouse) return;
 
     // Mouse capture
-    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
+    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_RIGHT)
         SDL_SetWindowRelativeMouseMode(graphics->window, true);
     else
         SDL_SetWindowRelativeMouseMode(graphics->window, false);
@@ -42,7 +46,7 @@ void CameraService::EventCallback(SDL_Event e) {
     switch (e.type) {
     case SDL_EVENT_MOUSE_MOTION:
         if (io.WantCaptureMouse) break;
-        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
+        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_RIGHT)
         {
             double xpos = e.motion.x;
             double ypos = e.motion.y;

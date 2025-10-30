@@ -5,6 +5,7 @@
 namespace ulvl::app {
 	class CameraService : public Service, public ApplicationListener {
 	public:
+		virtual void AddCallback() override;
 		virtual void Update() override;
 		virtual void EventCallback(SDL_Event e) override;
 	};

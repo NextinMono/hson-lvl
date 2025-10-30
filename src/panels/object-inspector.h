@@ -1,6 +1,7 @@
 #pragma once
 #include "../ui/panel.h"
 #include "../app.h"
+#include "../app/project-manager.h"
 
 namespace ulvl {
 	class ObjectInspector : public Panel {
@@ -13,6 +14,19 @@ namespace ulvl {
 			auto* app = Application::instance;
 
 			ImGui::Text("imgui sega balls!");
+
+			if (auto* projectManager = app->getService<app::ProjectManager>()) {
+				for (auto* project : projectManager->projects) {
+					if (ImGui::TreeNode(project->hsonPath.filename().string().c_str())) {
+
+						for (auto* object : project->objects) {
+							ImGui::Selectable(object->hson->name.value().c_str());
+						}
+
+						ImGui::TreePop();
+					}
+				}
+			}
 		}
 	};
 }

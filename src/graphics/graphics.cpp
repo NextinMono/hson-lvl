@@ -136,9 +136,10 @@ void Graphics::renderBegin()
     plume::RenderColor clearColor{ 0.1f, 0.12f, 0.15f, 1.0f };
     renderCtx.commandList->clearColor(0, clearColor);
 
-    mainCbufferData.view = camera->viewMatrix();
-    mainCbufferData.projection = camera->projMatrix();
-    updateMainCbuffer();
+    MainCBuffer* mainCbufferData = (MainCBuffer*)renderCtx.mainCBuffer->map();
+    mainCbufferData->view = camera->viewMatrix();
+    mainCbufferData->projection = camera->projMatrix();
+    renderCtx.mainCBuffer->unmap();
 
     for (auto* model : models)
         model->render();
