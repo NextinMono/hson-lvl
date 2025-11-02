@@ -1,6 +1,7 @@
 #include "app.h"
 #include "panels/object-list.h"
 #include "panels/object-inspector.h"
+#include "panels/object-library.h"
 #include "app/camera-service.h"
 #include "app/object-service.h"
 #include "app/project-manager.h"
@@ -20,6 +21,7 @@ void Application::init() {
 
     addPanel<ObjectList>();
     addPanel<ObjectInspector>();
+    addPanel<ObjectLibrary>();
 
     addService<app::CameraService>();
     addService<app::ObjectService>();

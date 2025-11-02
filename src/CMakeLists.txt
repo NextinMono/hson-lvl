@@ -38,7 +38,7 @@ add_executable (${HE_LEVEL_NAME}
 	"ui/editors/basic.cpp"
 	"app/template-manager.h"
 	"app/template-manager.cpp"
- "panels/object-inspector.cpp" "utilities/hson.h" "utilities/hson.cpp")
+ "panels/object-inspector.cpp" "utilities/hson.h" "utilities/hson.cpp" "panels/object-library.h")
 
 target_precompile_headers(${HE_LEVEL_NAME} PRIVATE "pch.h")
 
