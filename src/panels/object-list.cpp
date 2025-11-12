@@ -1,5 +1,6 @@
 #include "object-list.h"
 #include "../app/project-manager.h"
+#include "../ui/editors/basic.h"
 
 using namespace ulvl;
 
@@ -88,6 +89,8 @@ void RenderObject(app::ObjectService::Object* object) {
 }
 
 void RenderLayer(app::ProjectManager::Layer * layer) {
+	ImGui::PushID(layer);
+
 	bool isOpen = ImGui::TreeNode(layer->hsonPath.stem().string().c_str());
 
 	if (ImGui::BeginPopupContextItem()) {
@@ -106,23 +109,50 @@ void RenderLayer(app::ProjectManager::Layer * layer) {
 
 		ImGui::TreePop();
 	}
+
+	ImGui::PopID();
 }
 
 void RenderProject(app::ProjectManager::Project* project) {
-	if (ImGui::TreeNode(project->folderPath.stem().string().c_str())) {
+	ImGui::PushID(project);
+
+	bool isOpen = ImGui::TreeNode(project->folderPath.stem().string().c_str());
+
+	if (ImGui::BeginPopupContextItem()) {
+		if (ImGui::MenuItem("Save"))
+			project->save();
+
+		ImGui::EndPopup();
+	}
+
+	if (isOpen) {
 		for (auto* layer : project->layers)
 			RenderLayer(layer);
 
 		ImGui::TreePop();
 	}
+
+	ImGui::PopID();
 }
 
 void ObjectList::RenderPanel() {
 	auto* app = Application::instance;
 
+	Editor("Include Projects", includeProjects);
+
+	ImGui::Separator();
+
 	auto* objectSelectionMgr = app->getService<app::ObjectSelectionManager>();
 	if (auto* projectManager = app->getService<app::ProjectManager>()) {
-		for (auto* project : projectManager->projects)
-			RenderProject(project);
+		if (includeProjects)
+			for (auto* project : projectManager->projects)
+				RenderProject(project);
+		else
+			for (auto* project : projectManager->projects)
+				for (auto* layer : project->layers)
+					RenderLayer(layer);
+
+		for (auto* layer : projectManager->layers)
+			RenderLayer(layer);
 	}
 }

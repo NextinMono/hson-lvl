@@ -11,6 +11,8 @@ namespace ulvl {
 			return { .name = "Object List", .position = { 150, 100 }, .size = { 100, 350 }, .pivot{ 0, 0 } };
 		}
 
+		bool includeProjects{ true };
+
 		virtual void RenderPanel() override;
 	};
 }

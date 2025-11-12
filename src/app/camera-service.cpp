@@ -38,7 +38,7 @@ void CameraService::Update() {
     if (keys[SDL_SCANCODE_D]) camera->addPosition(speed * camera->right());
     if (keys[SDL_SCANCODE_A]) camera->addPosition(speed * -camera->right());
     if (keys[SDL_SCANCODE_SPACE]) camera->addPosition(speed * glm::vec3(0, 1, 0));
-    if (keys[SDL_SCANCODE_LCTRL]) camera->addPosition(speed * glm::vec3(0, -1, 0));
+    if (viewportHovered && keys[SDL_SCANCODE_LCTRL]) camera->addPosition(speed * glm::vec3(0, -1, 0));
 
     bool rightMouseHeld = SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_MASK(SDL_BUTTON_RIGHT);
 

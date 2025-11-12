@@ -12,10 +12,14 @@ namespace ulvl {
 
 		if (ImGui::BeginMainMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
-				if (ImGui::MenuItem("New", "Ctrl+N")) {}
+				if (ImGui::BeginMenu("New")) {
+					if (ImGui::MenuItem("Layer", "Ctrl+N")) projectMgr->newLayer();
+					if (ImGui::MenuItem("Project", "Ctrl+Shift+N")) projectMgr->newProj();
+					ImGui::EndMenu();
+				}
 				if (ImGui::MenuItem("Open", "Ctrl+O")) {}
 				if (ImGui::MenuItem("Save", "Ctrl+S")) objSelectMgr->save();
-				if (ImGui::MenuItem("Save As", "")) {}
+				if (ImGui::MenuItem("Save All", "Ctrl+Shift+S")) projectMgr->saveAll();
 
 				ImGui::EndMenu();
 			}

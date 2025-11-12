@@ -28,12 +28,24 @@ void ProjectManager::Project::save() {
 		layer->save();
 }
 
+void ProjectManager::AddCallback() {
+	Application::instance->addListener(this);
+}
+
 void ProjectManager::loadProject(const std::filesystem::path& folderPath) {
 	projects.push_back(new Project{ folderPath });
 }
 
+void ProjectManager::loadLayer(const std::filesystem::path& hsonPath) {
+	layers.push_back(new Layer{ hsonPath });
+}
+
 void ProjectManager::addProject(const std::string& name) {
 	projects.push_back(new Project{ name });
+}
+
+void ProjectManager::addLayer(const std::string& name) {
+	layers.push_back(new Layer{ name });
 }
 
 ProjectManager::Layer* ProjectManager::getLayer(const hl::hson::project* project) {
@@ -51,6 +63,28 @@ void ProjectManager::setUnsaved(bool unsaved) {
 	gfx::Graphics::instance->setUnsaved(unsaved);
 }
 
+void ProjectManager::newProj() {
+	addProject("new-project");
+}
+
+void ProjectManager::newLayer() {
+	addLayer("new-layer");
+}
+
+void ProjectManager::saveAll() {
+	for (auto* project : projects)
+		project->save();
+	for (auto* layer : layers)
+		layer->save();
+}
+
+void ProjectManager::EventCallback(SDL_Event e) {
+	const bool* keys = SDL_GetKeyboardState(NULL);
+
+	if ((keys[SDL_SCANCODE_LCTRL] || keys[SDL_SCANCODE_RCTRL]) && (keys[SDL_SCANCODE_LSHIFT] || keys[SDL_SCANCODE_RSHIFT]) && keys[SDL_SCANCODE_N]) newProj();
+	else if ((keys[SDL_SCANCODE_LCTRL] || keys[SDL_SCANCODE_RCTRL]) && keys[SDL_SCANCODE_N]) newLayer();
+}
+
 ProjectManager::Layer::Layer(const std::filesystem::path& hsonPath) : hsonPath{ hsonPath } {
 	hson = new hl::hson::project{ hsonPath };
 	auto* objectService = Application::instance->getService<ObjectService>();
@@ -58,6 +92,13 @@ ProjectManager::Layer::Layer(const std::filesystem::path& hsonPath) : hsonPath{ 
 		objects.push_back(objectService->addObject(object.first, &object.second, hson));
 	for (auto* object : objects)
 		object->updateChildren();
+}
+
+ProjectManager::Layer::Layer(const std::string& name) : hsonPath{ name } {
+	if (!hsonPath.has_extension())
+		hsonPath += ".hson";
+
+	hson = new hl::hson::project{};
 }
 
 void ProjectManager::Layer::save() {
