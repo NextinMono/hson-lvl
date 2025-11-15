@@ -35,8 +35,8 @@ void ProjectManager::Project::closeLayer(Layer* layer, bool removeFromVector) {
 	auto* objServ = Application::instance->getService<ObjectService>();
 	for (auto it = layer->objects.begin(); it != layer->objects.end(); it++) {
 		auto* obj = (*it);
-		if ((*it)->hasChildren())
-			std::advance(it, (*it)->children.size());
+		if (obj->hasChildren())
+			std::advance(it, obj->children.size());
 		objServ->removeObject(obj, false);
 	}
 	layer->objects.clear();
@@ -114,9 +114,14 @@ void ProjectManager::closeLayer(Layer* layer) {
 	layers.erase(std::remove(layers.begin(), layers.end(), layer));
 
 	auto* objServ = Application::instance->getService<ObjectService>();
-	for (auto* obj : layer->objects)
-		objServ->removeObject(obj);
+	for (auto it = layer->objects.begin(); it != layer->objects.end(); it++) {
+		auto* obj = (*it);
+		if (obj->hasChildren())
+			std::advance(it, obj->children.size());
+		objServ->removeObject(obj, false);
+	}
 	layer->objects.clear();
+	layer->hson->clear();
 	delete layer->hson;
 	delete layer;
 }
