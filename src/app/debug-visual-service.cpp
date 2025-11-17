@@ -66,16 +66,17 @@ void DebugVisualService::initSphere() {
     gfx::PosVertex sphereVertices[(X_SEGMENTS + 1) * (Y_SEGMENTS + 1)]{};
     unsigned short sphereIndices[X_SEGMENTS * Y_SEGMENTS * 6]{};
 
+    const double PI{ std::numbers::pi };
     int v = 0;
     for (int y = 0; y <= Y_SEGMENTS; y++)
     {
         float vRatio = (float)y / Y_SEGMENTS;
-        float phi = vRatio * 3.14159265f;
+        float phi = vRatio * PI;
 
         for (int x = 0; x <= X_SEGMENTS; x++)
         {
             float uRatio = (float)x / X_SEGMENTS;
-            float theta = uRatio * 2.0f * 3.14159265f;
+            float theta = uRatio * 2.0f * PI;
 
             float px = std::cosf(theta) * std::sinf(phi);
             float py = std::cosf(phi);
