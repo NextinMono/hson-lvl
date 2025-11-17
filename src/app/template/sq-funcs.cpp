@@ -564,3 +564,59 @@ SQInteger ulvl::app::DebugVisualDrawCube(HSQUIRRELVM vm) {
 
 	return 0;
 }
+
+SQInteger ulvl::app::DebugVisualDrawSphere(HSQUIRRELVM vm) {
+	DebugVisualService* debugVisual{};
+	sq_getinstanceup(vm, 1, (SQUserPointer*)&debugVisual, nullptr, SQFalse);
+
+	glm::vec4* color{};
+	sq_getinstanceup(vm, 2, (SQUserPointer*)&color, nullptr, SQFalse);
+
+	glm::vec3* pos{};
+	sq_getinstanceup(vm, 3, (SQUserPointer*)&pos, nullptr, SQFalse);
+
+	float radius{ 0 };
+	sq_getfloat(vm, 4, &radius);
+
+	ObjectService::Object* object{};
+	sq_getinstanceup(vm, 5, (SQUserPointer*)&object, nullptr, SQFalse);
+
+	gfx::InstancedMesh mesh{};
+	mesh.id = (int)object;
+	mesh.color = *color;
+	mesh.worldMatrix = glm::translate(glm::mat4{ 1 }, *pos) * glm::scale(glm::mat4{ 1 }, glm::vec3{ radius*2 });
+	debugVisual->addSphere(mesh);
+
+	return 0;
+}
+
+SQInteger ulvl::app::DebugVisualDrawCylinder(HSQUIRRELVM vm) {
+	DebugVisualService* debugVisual{};
+	sq_getinstanceup(vm, 1, (SQUserPointer*)&debugVisual, nullptr, SQFalse);
+
+	glm::vec4* color{};
+	sq_getinstanceup(vm, 2, (SQUserPointer*)&color, nullptr, SQFalse);
+
+	glm::vec3* pos{};
+	sq_getinstanceup(vm, 3, (SQUserPointer*)&pos, nullptr, SQFalse);
+
+	glm::vec4* rot{};
+	sq_getinstanceup(vm, 4, (SQUserPointer*)&rot, nullptr, SQFalse);
+
+	float radius{ 0 };
+	sq_getfloat(vm, 5, &radius);
+
+	float height{ 0 };
+	sq_getfloat(vm, 6, &height);
+
+	ObjectService::Object* object{};
+	sq_getinstanceup(vm, 7, (SQUserPointer*)&object, nullptr, SQFalse);
+
+	gfx::InstancedMesh mesh{};
+	mesh.id = (int)object;
+	mesh.color = *color;
+	mesh.worldMatrix = glm::translate(glm::mat4{ 1 }, *pos) * glm::toMat4(*(glm::quat*)rot) * glm::scale(glm::mat4{ 1 }, glm::vec3{ radius * 2, height, radius * 2 });
+	debugVisual->addCylinder(mesh);
+
+	return 0;
+}

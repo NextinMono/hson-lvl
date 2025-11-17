@@ -14,6 +14,11 @@ Template::Template(const char* templateName) : name{ templateName } {
 	squirrelWrap.init();
 	registerFuncs(squirrelWrap);
 	registerTypes(squirrelWrap);
+
+	fs::path objPath = fs::path{ "templates" } / name / "src";
+	for (auto& file : fs::directory_iterator{ objPath })
+		if (file.path().extension() == ".nut")
+			squirrelWrap.loadFile(file);
 }
 
 ModelData Template::getModelData(ObjectService::Object* obj) {
@@ -22,7 +27,6 @@ ModelData Template::getModelData(ObjectService::Object* obj) {
 	if (!fs::exists(objPath))
 		return {};
 
-	squirrelWrap.loadFile(objPath);
 	return squirrelWrap.callGetModelData(obj);
 }
 
@@ -32,7 +36,6 @@ void Template::addDebugVisual(ObjectService::Object* obj) {
 	if (!fs::exists(objPath))
 		return;
 
-	squirrelWrap.loadFile(objPath);
 	squirrelWrap.callAddDebugVisual(obj);
 }
 

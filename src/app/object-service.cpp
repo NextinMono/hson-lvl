@@ -203,7 +203,7 @@ void ObjectService::Object::updateDebugVisual() {
     auto* tem = Application::instance->getService<TemplateManager>()->currentTemplate;
     auto* debugVisual = Application::instance->getService<DebugVisualService>();
 
-    debugVisual->removeCubes((int)this);
+    debugVisual->removeMeshes((int)this);
     tem->addDebugVisual(this);
 }
 

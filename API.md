@@ -63,6 +63,8 @@ Indices are always u16.
 A class used for adding debug visuals to the scene.
 #### Functions
 - `DrawCube(Vec4 color, Vec3 position, Vec4 rotation, Vec3 scale, Object obj)` - adds a cube debug visual
+- `DrawSphere(Vec4 color, Vec3 position, float radius, Object obj)` - adds a sphere debug visual
+- `DrawCylinder(Vec4 color, Vec3 position, Vec4 rotation, float radius, float height, Object obj)` - adds a cylinder debug visual
 
 ## Global Functions
 - `GetObjByID(string guid)` - get an object by its guid (returns the custom [Object](#object) class)

@@ -79,6 +79,8 @@ namespace ulvl::app {
 	// -------------
 
 	SQFUNC(DebugVisualDrawCube);
+	SQFUNC(DebugVisualDrawSphere);
+	SQFUNC(DebugVisualDrawCylinder);
 
 	static void registerFuncs(SquirrelWrap& wrap) {
 		wrap.RegisterFunc(ToBytes);
