@@ -82,8 +82,7 @@ class DashPanel {
     }
 }
 ```
-It's done this way, to make it easier to store variables, for i.e. animations.
-The function that are supported are:
+It's done this way, to make it easier to store variables, for i.e. animations. The functions that are supported are:
 - `GetModelData(Object obj, ModelData modelData)` - called, when the editor is loading the object type, for getting information about the model.
 - `AddDebugVisual(Object obj, DebugVisual debugVisual)` - called, whenever an object is updated or loaded, for creating its visualizers.
 - `AddDynamicDebugVisual(Object obj, DebugVisual debugVisual, float deltaTime)` - called every frame of when an object is selected.
