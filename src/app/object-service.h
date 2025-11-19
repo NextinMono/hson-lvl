@@ -44,6 +44,9 @@ namespace ulvl::app {
 			void updateModel();
 			void updateModelMat();
 			void updateDebugVisual();
+			void addDynamicVisual();
+			void dynamicVisualReset();
+			void removeDynamicVisual();
 		};
 
 		std::vector<Object*> objects;

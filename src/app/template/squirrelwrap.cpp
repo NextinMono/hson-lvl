@@ -42,17 +42,20 @@ void SquirrelWrap::registerFunction(SQFUNCTION func, const char* funcName) {
     sq_pop(vm, 1);
 }
 
-ModelData ulvl::app::SquirrelWrap::callGetModelData(ObjectService::Object* obj)
-{
+ModelData ulvl::app::SquirrelWrap::callGetModelData(ObjectService::Object* obj) {
     ModelData modelData{};
 
     sq_pushroottable(vm);
-    char funcName[0x100];
-    snprintf(funcName, sizeof(funcName), "%s_%s", obj->hson->type.c_str(), "GetModelData");
-    sq_pushstring(vm, funcName, -1);
+    sq_pushstring(vm, obj->hson->type.c_str(), -1);
     if (SQ_FAILED(sq_get(vm, -2))) {
         sq_pop(vm, 1);
-        return modelData;
+        return {};
+    }
+
+    sq_pushstring(vm, "GetModelData", -1);
+    if (SQ_FAILED(sq_get(vm, -2))) {
+        sq_pop(vm, 2);
+        return {};
     }
 
     sq_pushroottable(vm);
@@ -92,11 +95,15 @@ ModelData ulvl::app::SquirrelWrap::callGetModelData(ObjectService::Object* obj)
 
 void SquirrelWrap::callAddDebugVisual(ObjectService::Object* obj) {
     sq_pushroottable(vm);
-    char funcName[0x100];
-    snprintf(funcName, sizeof(funcName), "%s_%s", obj->hson->type.c_str(), "AddDebugVisual");
-    sq_pushstring(vm, funcName, -1);
+    sq_pushstring(vm, obj->hson->type.c_str(), -1);
     if (SQ_FAILED(sq_get(vm, -2))) {
         sq_pop(vm, 1);
+        return;
+    }
+
+    sq_pushstring(vm, "AddDebugVisual", -1);
+    if (SQ_FAILED(sq_get(vm, -2))) {
+        sq_pop(vm, 2);
         return;
     }
 
@@ -114,6 +121,96 @@ void SquirrelWrap::callAddDebugVisual(ObjectService::Object* obj) {
     sq_setinstanceup(vm, -1, Application::instance->getService<DebugVisualService>());
 
     if (SQ_FAILED(sq_call(vm, 3, SQFalse, SQTrue))) {
+        sq_pushroottable(vm);
+        sq_getlasterror(vm);
+
+        const SQChar* errStr = nullptr;
+
+        if (SQ_SUCCEEDED(sq_tostring(vm, -1))) {
+            sq_getstring(vm, -1, &errStr);
+            if (errStr)
+                printf("Squirrel Error: %s\n", errStr);
+
+            sq_pop(vm, 1);
+        }
+        sq_pop(vm, 2);
+        return;
+    }
+
+    sq_pop(vm, 2);
+}
+
+void SquirrelWrap::callAddDynamicDebugVisual(ObjectService::Object* obj) {
+    sq_pushroottable(vm);
+    sq_pushstring(vm, obj->hson->type.c_str(), -1);
+    if (SQ_FAILED(sq_get(vm, -2))) {
+        sq_pop(vm, 1);
+        return;
+    }
+
+    sq_pushstring(vm, "AddDynamicDebugVisual", -1);
+    if (SQ_FAILED(sq_get(vm, -2))) {
+        sq_pop(vm, 2);
+        return;
+    }
+
+    sq_pushroottable(vm);
+    sq_pushstring(vm, "Object", -1);
+    sq_get(vm, -2);
+    sq_createinstance(vm, -1);
+    sq_remove(vm, -2);
+    sq_setinstanceup(vm, -1, obj);
+
+    sq_pushstring(vm, "DebugVisual", -1);
+    sq_get(vm, -3);
+    sq_createinstance(vm, -1);
+    sq_remove(vm, -2);
+    sq_setinstanceup(vm, -1, Application::instance->getService<DebugVisualService>());
+
+    sq_pushfloat(vm, Application::instance->frameTimer.deltaTime);
+
+    if (SQ_FAILED(sq_call(vm, 4, SQFalse, SQTrue))) {
+        sq_pushroottable(vm);
+        sq_getlasterror(vm);
+
+        const SQChar* errStr = nullptr;
+
+        if (SQ_SUCCEEDED(sq_tostring(vm, -1))) {
+            sq_getstring(vm, -1, &errStr);
+            if (errStr)
+                printf("Squirrel Error: %s\n", errStr);
+
+            sq_pop(vm, 1);
+        }
+        sq_pop(vm, 2);
+        return;
+    }
+
+    sq_pop(vm, 2);
+}
+
+void SquirrelWrap::callDynamicDebugVisualEnd(ObjectService::Object* obj) {
+    sq_pushroottable(vm);
+    sq_pushstring(vm, obj->hson->type.c_str(), -1);
+    if (SQ_FAILED(sq_get(vm, -2))) {
+        sq_pop(vm, 1);
+        return;
+    }
+
+    sq_pushstring(vm, "DynamicDebugVisualEnd", -1);
+    if (SQ_FAILED(sq_get(vm, -2))) {
+        sq_pop(vm, 2);
+        return;
+    }
+
+    sq_pushroottable(vm);
+    sq_pushstring(vm, "Object", -1);
+    sq_get(vm, -2);
+    sq_createinstance(vm, -1);
+    sq_remove(vm, -2);
+    sq_setinstanceup(vm, -1, obj);
+
+    if (SQ_FAILED(sq_call(vm, 2, SQFalse, SQTrue))) {
         sq_pushroottable(vm);
         sq_getlasterror(vm);
 

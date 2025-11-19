@@ -68,3 +68,23 @@ A class used for adding debug visuals to the scene.
 
 ## Global Functions
 - `GetObjByID(string guid)` - get an object by its guid (returns the custom [Object](#object) class)
+
+## Interface
+The editor calls certain functions for its template functionality. The functions are called statically from a class, such as:
+```
+class DashPanel {
+	static function AddDynamicDebugVisual(obj, debugVisual, deltaTime) {
+        local position = obj.position();
+        local rotation = Vec4(0, 0, 0, 1);
+        local scale = Vec3(10, 10, 10);
+        local color = Vec4(1, 1, 0, 0.2);
+        debugVisual.DrawCube(color, position, rotation, scale, obj);
+    }
+}
+```
+It's done this way, to make it easier to store variables, for i.e. animations.
+The function that are supported are:
+- `GetModelData(Object obj, ModelData modelData)` - called, when the editor is loading the object type, for getting information about the model.
+- `AddDebugVisual(Object obj, DebugVisual debugVisual)` - called, whenever an object is updated or loaded, for creating its visualizers.
+- `AddDynamicDebugVisual(Object obj, DebugVisual debugVisual, float deltaTime)` - called every frame of when an object is selected.
+- `DynamicDebugVisualEnd(Object obj)` - called, whenever an object is stopped being selected.

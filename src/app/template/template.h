@@ -38,6 +38,8 @@ namespace ulvl::app {
 		Template(const char* templateName);
 		ModelData getModelData(ObjectService::Object* obj);
 		void addDebugVisual(ObjectService::Object* obj);
+		void addDynamicDebugVisual(ObjectService::Object* obj);
+		void dynamicDebugVisualEnd(ObjectService::Object* obj);
 
 		static bool templateExists(const char* name);
 	};

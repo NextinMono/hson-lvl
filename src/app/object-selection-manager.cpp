@@ -35,6 +35,10 @@ void ObjectSelectionManager::AddCallback() {
 }
 
 void ObjectSelectionManager::select(ObjectService::Object* object) {
+	if (selected) {
+		selected->removeDynamicVisual();
+		selected->dynamicVisualReset();
+	}
 	selected = object;
 	updateMatrix();
 }
@@ -71,9 +75,13 @@ void ObjectSelectionManager::save() {
 }
 
 void ObjectSelectionManager::PreRender() {
-	if (shouldUpdateDebug) {
-		shouldUpdateDebug = false;
-		selected->updateDebugVisual();
+	if (selected) {
+		if (shouldUpdateDebug) {
+			shouldUpdateDebug = false;
+			selected->updateDebugVisual();
+		}
+		selected->removeDynamicVisual();
+		selected->addDynamicVisual();
 	}
 }
 

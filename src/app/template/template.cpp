@@ -46,6 +46,24 @@ void Template::addDebugVisual(ObjectService::Object* obj) {
 	squirrelWrap.callAddDebugVisual(obj);
 }
 
+void Template::addDynamicDebugVisual(ObjectService::Object* obj) {
+	fs::path objPath = rel_to_exe(fs::path{ "templates" } / name / "src");
+	objPath /= { obj->hson->type + std::string{ ".nut" } };
+	if (!fs::exists(objPath))
+		return;
+
+	squirrelWrap.callAddDynamicDebugVisual(obj);
+}
+
+void Template::dynamicDebugVisualEnd(ObjectService::Object* obj) {
+	fs::path objPath = rel_to_exe(fs::path{ "templates" } / name / "src");
+	objPath /= { obj->hson->type + std::string{ ".nut" } };
+	if (!fs::exists(objPath))
+		return;
+
+	squirrelWrap.callDynamicDebugVisualEnd(obj);
+}
+
 bool Template::templateExists(const char* name) {
 	if (name == nullptr || strcmp(name, "") == 0) return false;
 

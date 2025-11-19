@@ -207,6 +207,21 @@ void ObjectService::Object::updateDebugVisual() {
     tem->addDebugVisual(this);
 }
 
+void ObjectService::Object::addDynamicVisual() {
+    auto* tem = Application::instance->getService<TemplateManager>()->currentTemplate;
+    tem->addDynamicDebugVisual(this);
+}
+
+void ObjectService::Object::dynamicVisualReset() {
+    auto* tem = Application::instance->getService<TemplateManager>()->currentTemplate;
+    tem->dynamicDebugVisualEnd(this);
+}
+
+void ObjectService::Object::removeDynamicVisual() {
+    auto* debugVisual = Application::instance->getService<DebugVisualService>();
+    debugVisual->removeMeshes((int)this);
+}
+
 ObjectService::Object* ObjectService::addObject(const hl::guid& guid, hl::hson::object* hson, hl::hson::project* proj) {
     auto* object = new Object{ guid, hson, proj };
     objects.push_back(object);

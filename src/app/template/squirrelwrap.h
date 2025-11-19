@@ -24,5 +24,7 @@ namespace ulvl::app {
 		void registerFunction(SQFUNCTION func, const char* funcName);
 		ModelData callGetModelData(ObjectService::Object* obj);
 		void callAddDebugVisual(ObjectService::Object* obj);
+		void callAddDynamicDebugVisual(ObjectService::Object* obj);
+		void callDynamicDebugVisualEnd(ObjectService::Object* obj);
 	};
 }
