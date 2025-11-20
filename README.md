@@ -5,4 +5,4 @@ A universal HSON (Hedgehog Set Object Notation) editor made in C++ powered by [H
 
 HSON is a universal file format, for said feature, it's using a custom template system. This editor expands on it, and creates its own, using the Squirrel scripting language for proper previews and visuals of the objects. The custom API for it can be found [here](API.md).
 # WARNING
-This editor is still under rapid development, most features aren't finalized neither polished.
+This editor is still under rapid development, most features haven't been finalized, some yet to be added.

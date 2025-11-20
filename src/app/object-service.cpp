@@ -241,6 +241,7 @@ void ObjectService::removeObject(Object* object, bool removeFromLayer) {
     }
 
     if (object->owner) {
+        // TODO: Find a proper way to remove from hl::ordered_maps
         hl::ordered_map<hl::guid, hl::hson::object>& objs{ object->owner->objects };
         int idx{ 0 };
         for (auto it = objs.begin(); it != objs.end(); ++it) {
