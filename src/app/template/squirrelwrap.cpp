@@ -22,10 +22,40 @@ void errorFunc(HSQUIRRELVM, const SQChar* s, ...) {
     vfprintf(stderr, s, args);
     va_end(args);
 }
+SQInteger squirrelErrorHandler(HSQUIRRELVM vm)
+{
+	const SQChar* err;
+	if (SQ_SUCCEEDED(sq_getstring(vm, 2, &err))) {
+		printf("### SQUIRREL SCRIPT ERROR: %s ###\n", err);
+	}
 
+	printf("Stack Trace:\n");
+
+	SQStackInfos si;
+	SQInteger level = 1;
+
+	while (SQ_SUCCEEDED(sq_stackinfos(vm, level, &si))) {
+		const char* func = si.funcname ? si.funcname : "<unknown>";
+		const char* src = si.source ? si.source : "<unknown>";
+
+		printf("  [%lld] %s (%s:%d)\n",
+			(long long)level,
+			func,
+			src,
+			si.line);
+
+		level++;
+	}
+	printf("\n\n");
+
+    return 0;
+}
 void SquirrelWrap::init() {
 	vm = sq_open(1024);
-    sq_setprintfunc(vm, printFunc, errorFunc);
+	sq_setprintfunc(vm, printFunc, errorFunc);
+	sq_seterrorhandler(vm);
+	sq_newclosure(vm, squirrelErrorHandler, 0);
+	sq_seterrorhandler(vm);
 }
 
 void SquirrelWrap::loadFile(const std::filesystem::path& path) {
@@ -79,8 +109,7 @@ ModelData ulvl::app::SquirrelWrap::callGetModelData(ObjectService::Object* obj) 
 
         if (SQ_SUCCEEDED(sq_tostring(vm, -1))) {
             sq_getstring(vm, -1, &errStr);
-            if (errStr)
-                printf("Squirrel Error: %s\n", errStr);
+
 
             sq_pop(vm, 1);
         }
@@ -128,8 +157,7 @@ void SquirrelWrap::callAddDebugVisual(ObjectService::Object* obj) {
 
         if (SQ_SUCCEEDED(sq_tostring(vm, -1))) {
             sq_getstring(vm, -1, &errStr);
-            if (errStr)
-                printf("Squirrel Error: %s\n", errStr);
+
 
             sq_pop(vm, 1);
         }
@@ -177,8 +205,7 @@ void SquirrelWrap::callAddDynamicDebugVisual(ObjectService::Object* obj) {
 
         if (SQ_SUCCEEDED(sq_tostring(vm, -1))) {
             sq_getstring(vm, -1, &errStr);
-            if (errStr)
-                printf("Squirrel Error: %s\n", errStr);
+
 
             sq_pop(vm, 1);
         }
@@ -218,8 +245,7 @@ void SquirrelWrap::callDynamicDebugVisualEnd(ObjectService::Object* obj) {
 
         if (SQ_SUCCEEDED(sq_tostring(vm, -1))) {
             sq_getstring(vm, -1, &errStr);
-            if (errStr)
-                printf("Squirrel Error: %s\n", errStr);
+
 
             sq_pop(vm, 1);
         }

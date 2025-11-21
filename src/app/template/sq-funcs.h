@@ -33,6 +33,7 @@ namespace ulvl::app {
 	// Object
 	SQFUNC(GetObjLocalPosition);
 	SQFUNC(GetObjWorldPosition);
+	SQFUNC(GetObjRotation);
 	SQFUNC(GetObjName);
 	SQFUNC(GetObjParameters);
 	SQFUNC(GetObjParent);
@@ -54,6 +55,7 @@ namespace ulvl::app {
 	SQFUNC(Vec3SetY);
 	SQFUNC(Vec3GetZ);
 	SQFUNC(Vec3SetZ);
+	SQFUNC(Vec3RotateByQuat);
 
 	// glm::vec4
 	SQFUNC(Vec4Ctor);

@@ -260,7 +260,20 @@ SQInteger ulvl::app::GetObjWorldPosition(HSQUIRRELVM vm) {
 	sq_setreleasehook(vm, -1, Vec3ReleaseHook);
 	return 1;
 }
+SQInteger ulvl::app::GetObjRotation(HSQUIRRELVM vm) {
+	ObjectService::Object* self = nullptr;
+	sq_getinstanceup(vm, 1, (SQUserPointer*)&self, nullptr, SQFalse);
 
+	sq_pushroottable(vm);
+	sq_pushstring(vm, "Vec4", -1);
+	sq_get(vm, -2);
+	sq_createinstance(vm, -1);
+	glm::quat rot = self->getQuaternion();
+	glm::vec4* copy = new glm::vec4(rot.w, rot.x, rot.y, rot.z);
+	sq_setinstanceup(vm, -1, copy);
+	sq_setreleasehook(vm, -1, Vec4ReleaseHook);
+	return 1;
+}
 SQInteger ulvl::app::GetObjName(HSQUIRRELVM vm) {
 	ObjectService::Object* self = nullptr;
 	sq_getinstanceup(vm, 1, (SQUserPointer*)&self, nullptr, SQFalse);
@@ -386,6 +399,27 @@ SQInteger ulvl::app::Vec3GetZ(HSQUIRRELVM vm) {
 	sq_getinstanceup(vm, 1, (SQUserPointer*)&vec3, nullptr, SQFalse);
 
 	sq_pushfloat(vm, vec3->z);
+
+	return 1;
+}
+SQInteger ulvl::app::Vec3RotateByQuat(HSQUIRRELVM vm) {
+	//Easier to do it this way than remake it in squirrel
+
+	glm::vec3* vec;
+	sq_getinstanceup(vm, 1, (SQUserPointer*)&vec, 0, SQFalse);
+	glm::vec4* quat;
+	sq_getinstanceup(vm, 2, (SQUserPointer*)&quat, 0, SQFalse);
+
+	glm::quat q(quat->w, quat->x, quat->y, quat->z);
+	glm::vec3 rotated = glm::rotate(q, *vec);
+	sq_pushroottable(vm);
+	sq_pushstring(vm, _SC("Vec3"), -1);
+	sq_get(vm, -2);
+	sq_remove(vm, -2);
+
+	sq_createinstance(vm, -1);
+	glm::vec3* retVec = new glm::vec3(rotated);
+	sq_setinstanceup(vm, -1, retVec);
 
 	return 1;
 }
@@ -584,7 +618,7 @@ SQInteger ulvl::app::DebugVisualDrawSphere(HSQUIRRELVM vm) {
 	gfx::InstancedMesh mesh{};
 	mesh.id = (int)object;
 	mesh.color = *color;
-	mesh.worldMatrix = glm::translate(glm::mat4{ 1 }, *pos) * glm::scale(glm::mat4{ 1 }, glm::vec3{ radius*2 });
+	mesh.worldMatrix = glm::translate(glm::mat4{ 1 }, *pos) * glm::scale(glm::mat4{ 1 }, glm::vec3{ radius * 2 });
 	debugVisual->addSphere(mesh);
 
 	return 0;

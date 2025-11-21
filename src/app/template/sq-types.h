@@ -31,6 +31,7 @@ namespace ulvl::app {
 			NEW_MEMBER_R("x", Vec3GetX, Vec3SetX)
 			NEW_MEMBER_R("y", Vec3GetY, Vec3SetY)
 			NEW_MEMBER_R("z", Vec3GetZ, Vec3SetZ)
+			NEW_FUNC("rotate", Vec3RotateByQuat)
 		);
 
 		NEW_CLASS(
@@ -55,6 +56,7 @@ namespace ulvl::app {
 		NEW_CLASS(
 			Object,
 			NEW_MEMBER_R("position", GetObjWorldPosition)
+			NEW_MEMBER_R("rotation", GetObjRotation)
 			NEW_MEMBER_R("localPosition", GetObjLocalPosition)
 			NEW_MEMBER_R("name", GetObjName)
 			NEW_MEMBER_R("parameters", GetObjParameters)
