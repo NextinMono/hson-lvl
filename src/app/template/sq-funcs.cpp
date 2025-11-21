@@ -413,7 +413,7 @@ SQInteger ulvl::app::Vec3RotateByQuat(HSQUIRRELVM vm) {
 	glm::quat q(quat->w, quat->x, quat->y, quat->z);
 	glm::vec3 rotated = glm::rotate(q, *vec);
 	sq_pushroottable(vm);
-	sq_pushstring(vm, _SC("Vec3"), -1);
+	sq_pushstring(vm, "Vec3", -1);
 	sq_get(vm, -2);
 	sq_remove(vm, -2);
 
