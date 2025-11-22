@@ -8,6 +8,7 @@ namespace fs = std::filesystem;
 
 Template::~Template() {
 	delete hsonTemplate;
+	delete squirrelWrap;
 }
 
 Template::Template(const char* templateName) : name{ templateName } {
@@ -19,10 +20,8 @@ Template::Template(const char* templateName) : name{ templateName } {
 	reloadScripts();
 }
 
-void Template::reloadScripts()
-{
-	if(squirrelWrap)
-		delete squirrelWrap;
+void Template::reloadScripts() {
+	if (squirrelWrap) delete squirrelWrap;
 	squirrelWrap = new SquirrelWrap();
 	squirrelWrap->init();
 	registerFuncs(*squirrelWrap);

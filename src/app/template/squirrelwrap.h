@@ -18,7 +18,7 @@ namespace ulvl::app {
 		typedef SQInteger(*SQFUNCTION)(HSQUIRRELVM);
 		HSQUIRRELVM vm;
 
-		~SquirrelWrap() { if(vm != nullptr) sq_close(vm); }
+		~SquirrelWrap() { kill(); }
 		void init();
 		void loadFile(const std::filesystem::path& path);
 		void registerFunction(SQFUNCTION func, const char* funcName);
@@ -26,5 +26,6 @@ namespace ulvl::app {
 		void callAddDebugVisual(ObjectService::Object* obj);
 		void callAddDynamicDebugVisual(ObjectService::Object* obj);
 		void callDynamicDebugVisualEnd(ObjectService::Object* obj);
+		void kill();
 	};
 }

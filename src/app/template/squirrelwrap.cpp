@@ -255,3 +255,8 @@ void SquirrelWrap::callDynamicDebugVisualEnd(ObjectService::Object* obj) {
 
     sq_pop(vm, 2);
 }
+
+void SquirrelWrap::kill() {
+    if (vm != nullptr) 
+        sq_close(vm);
+}
