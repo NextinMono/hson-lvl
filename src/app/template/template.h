@@ -32,7 +32,7 @@ namespace ulvl::app {
 		const char* name;
 		hl::set_object_type_database* hsonTemplate;
 		Tree objectTree{};
-		SquirrelWrap squirrelWrap{};
+		SquirrelWrap* squirrelWrap = new SquirrelWrap();
 
 		~Template();
 		Template(const char* templateName);
@@ -40,6 +40,7 @@ namespace ulvl::app {
 		void addDebugVisual(ObjectService::Object* obj);
 		void addDynamicDebugVisual(ObjectService::Object* obj);
 		void dynamicDebugVisualEnd(ObjectService::Object* obj);
+		void reloadScripts();
 
 		static bool templateExists(const char* name);
 	};

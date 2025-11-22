@@ -18,7 +18,7 @@ namespace ulvl::app {
 		typedef SQInteger(*SQFUNCTION)(HSQUIRRELVM);
 		HSQUIRRELVM vm;
 
-		~SquirrelWrap() { sq_close(vm); }
+		~SquirrelWrap() { if(vm != nullptr) sq_close(vm); }
 		void init();
 		void loadFile(const std::filesystem::path& path);
 		void registerFunction(SQFUNCTION func, const char* funcName);

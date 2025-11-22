@@ -13,6 +13,7 @@ namespace ulvl::app {
 		inline void setTemplate(std::string& templateName) { setTemplate(templateName.c_str()); }
 		void setTemplate(Template* temp);
 		void loadTemplate(const char* templateName);
+		void reloadAll();
 		void deloadTemplates();
 		inline void loadTemplate(std::string& templateName) { loadTemplate(templateName.c_str()); }
 	};

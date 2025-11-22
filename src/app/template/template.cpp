@@ -16,15 +16,24 @@ Template::Template(const char* templateName) : name{ templateName } {
 	hsonTemplate = new hl::set_object_type_database{ hsonFile.wstring().c_str() };
 	objectTree.generateTree(hsonTemplate);
 
-	squirrelWrap.init();
-	registerFuncs(squirrelWrap);
-	registerTypes(squirrelWrap);
+	reloadScripts();
+}
 
+void Template::reloadScripts()
+{
+	if(squirrelWrap)
+		delete squirrelWrap;
+	squirrelWrap = new SquirrelWrap();
+	squirrelWrap->init();
+	registerFuncs(*squirrelWrap);
+	registerTypes(*squirrelWrap);
+
+	fs::path temFolder = rel_to_exe(fs::path{ "templates" } / name);
 	fs::path objPath = temFolder / "src";
 	if (fs::exists(objPath)) {
 		for (auto& file : fs::directory_iterator{ objPath })
 			if (file.path().extension() == ".nut")
-				squirrelWrap.loadFile(file);
+				squirrelWrap->loadFile(file);
 	}
 }
 
@@ -34,7 +43,7 @@ ModelData Template::getModelData(ObjectService::Object* obj) {
 	if (!fs::exists(objPath))
 		return {};
 
-	return squirrelWrap.callGetModelData(obj);
+	return squirrelWrap->callGetModelData(obj);
 }
 
 void Template::addDebugVisual(ObjectService::Object* obj) {
@@ -43,7 +52,7 @@ void Template::addDebugVisual(ObjectService::Object* obj) {
 	if (!fs::exists(objPath))
 		return;
 
-	squirrelWrap.callAddDebugVisual(obj);
+	squirrelWrap->callAddDebugVisual(obj);
 }
 
 void Template::addDynamicDebugVisual(ObjectService::Object* obj) {
@@ -52,7 +61,7 @@ void Template::addDynamicDebugVisual(ObjectService::Object* obj) {
 	if (!fs::exists(objPath))
 		return;
 
-	squirrelWrap.callAddDynamicDebugVisual(obj);
+	squirrelWrap->callAddDynamicDebugVisual(obj);
 }
 
 void Template::dynamicDebugVisualEnd(ObjectService::Object* obj) {
@@ -61,7 +70,7 @@ void Template::dynamicDebugVisualEnd(ObjectService::Object* obj) {
 	if (!fs::exists(objPath))
 		return;
 
-	squirrelWrap.callDynamicDebugVisualEnd(obj);
+	squirrelWrap->callDynamicDebugVisualEnd(obj);
 }
 
 bool Template::templateExists(const char* name) {

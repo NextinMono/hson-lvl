@@ -12,6 +12,7 @@ namespace ulvl {
 		auto* projectMgr = app->getService<app::ProjectManager>();
 		auto* objSelectMgr = app->getService<app::ObjectSelectionManager>();
 		auto* fileDialogServ = app->getService<app::FileDialogService>();
+		auto* templateMgr = app->getService<app::TemplateManager>();
 
 		if (ImGui::BeginMainMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
@@ -31,6 +32,7 @@ namespace ulvl {
 				app->addPanel<SettingsPanel>();
 			}
 
+			if (ImGui::MenuItem("Reload Scripts", nullptr, objSelectMgr->canSave())) templateMgr->reloadAll();
 			ImGui::EndMainMenuBar();
 		}
 	}

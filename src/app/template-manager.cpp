@@ -29,6 +29,11 @@ void TemplateManager::loadTemplate(const char* templateName) {
 		setTemplate(temp);
 }
 
+void TemplateManager::reloadAll() {
+	for (auto* temp : templates)
+		temp->reloadScripts();
+}
+
 void TemplateManager::deloadTemplates() {
 	for (auto* temp : templates)
 		delete temp;
