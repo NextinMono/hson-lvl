@@ -410,8 +410,8 @@ SQInteger ulvl::app::Vec3RotateByQuat(HSQUIRRELVM vm) {
 	glm::vec4* quat;
 	sq_getinstanceup(vm, 2, (SQUserPointer*)&quat, 0, SQFalse);
 
-	glm::quat q(quat->w, quat->x, quat->y, quat->z);
-	glm::vec3 rotated = glm::rotate(q, *vec);
+	glm::quat q = glm::quat(quat->w, quat->x, quat->y, quat->z);
+	glm::vec3 rotated = q * (*vec);
 	sq_pushroottable(vm);
 	sq_pushstring(vm, "Vec3", -1);
 	sq_get(vm, -2);
@@ -420,6 +420,7 @@ SQInteger ulvl::app::Vec3RotateByQuat(HSQUIRRELVM vm) {
 	sq_createinstance(vm, -1);
 	glm::vec3* retVec = new glm::vec3(rotated);
 	sq_setinstanceup(vm, -1, retVec);
+	sq_setreleasehook(vm, -1, Vec3ReleaseHook);
 
 	return 1;
 }
